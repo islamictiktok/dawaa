@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دعوة زفاف سينمائية</title>
+    <!-- استيراد الخطوط -->
+    <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #171d14; /* زيتي داكن */
+            --gold-light: #e8d3a2;
+            --gold-dark: #b8995a;
+            --white-text: #f4f4f4;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            font-family: 'Tajawal', sans-serif;
+            color: var(--gold-light);
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            padding-top: 5vh; 
+            padding-bottom: 15vh;
+            min-height: 100vh;
+        }
+
+        /* جزيئات الذهب المتطايرة */
+        .particles-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: var(--gold-light);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--gold-light);
+            animation: floatUp 8s infinite linear, twinkle 2s infinite ease-in-out alternate;
+            opacity: 0;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.5; }
+            100% { transform: translateY(-10vh) scale(2); opacity: 0; }
+        }
+
+        @keyframes twinkle {
+            0% { box-shadow: 0 0 5px var(--gold-light); opacity: 0.3; }
+            100% { box-shadow: 0 0 20px #fff; opacity: 1; }
+        }
+
+        /* الحاوية الرئيسية */
+        .video-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* تنسيقات العناصر المخفية */
+        .hidden-scene {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .show-scene {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* تأثير الدخول الدرامي (الارتداد) للأسماء */
+        #scene4.hidden-scene {
+            transform: scale(0.5);
+            opacity: 0;
+        }
+        #scene4.show-scene {
+            transform: scale(1);
+            opacity: 1;
+            transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); 
+        }
+
+        /* عنوان "دعوة" بحجمه المتناسق ولمعان الذهب */
+        .main-title {
+            font-family: 'Aref Ruqaa', serif;
+            font-size: 4.5rem; /* تم تصغير الخط ليكون متناسقاً ولا يكسر السطر */
+            margin: 0;
+            background: linear-gradient(to right, var(--gold-dark) 20%, #fff 50%, var(--gold-dark) 80%);
+            background-size: 200% auto;
+            color: #000;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0px 10px 20px rgba(0,0,0,0.8);
+            animation: shineText 3s linear infinite;
+        }
+
+        @keyframes shineText {
+            to { background-position: 200% center; }
+        }
+
+        /* إطار صورة العريس - الإطار الخارجي */
+        .groom-frame-wrapper {
+            margin: 30px auto;
+            width: 160px;
+            height: 220px;
+            border-radius: 100px 100px 10px 10px;
+            padding: 4px;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold-dark));
+            box-shadow: 0 10px 30px rgba(184, 153, 90, 0.3);
+            position: relative;
+            animation: breatheFrame 4s ease-in-out infinite; 
+        }
+
+        @keyframes breatheFrame {
+            0%, 100% { transform: scale(1); box-shadow: 0 10px 30px rgba(184, 153, 90, 0.2); }
+            50% { transform: scale(1.05); box-shadow: 0 15px 50px rgba(184, 153, 90, 0.7); }
+        }
+
+        /* حاوية القص الذكي للصورة */
+        .img-crop-container {
+            width: 100%;
+            height: 100%;
+            border-radius: 96px 96px 6px 6px;
+            overflow: hidden; /* السر هنا: أي شيء خارج الإطار سيختفي */
+            background: radial-gradient(circle, #fcf9f2, #e8d3a2); /* خلفية استوديو هادئة */
+            position: relative;
+        }
+
+        /* الصورة نفسها */
+        .img-crop-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* تجعل الصورة تملأ الإطار بالكامل بتناسق */
+            object-position: top center; /* تركز على الوجه من الأعلى */
+            display: block;
+        }
+
+        /* تأثير الآلة الكاتبة بحجم نص مناسب */
+        .typewriter-text {
+            font-size: 1.15rem; /* تصغير الخط ليكون مرتباً */
+            line-height: 1.8;
+            min-height: 90px;
+            margin: 20px 0;
+            color: var(--white-text);
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1em;
+            background-color: var(--gold-light);
+            animation: blink 0.7s infinite;
+            vertical-align: middle;
+            box-shadow: 0 0 8px var(--gold-light);
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* الأسماء */
+        .names-box {
+            margin: 40px 0;
+            padding: 30px 0;
+            position: relative;
+        }
+
+        .names-box::before, .names-box::after {
+            content: '';
+            position: absolute;
+            left: 10%; width: 80%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+        }
+        .names-box::before { top: 0; }
+        .names-box::after { bottom: 0; }
+
+        .name {
+            font-family: 'Aref Ruqaa', serif;
+            font-size: 2.5rem; /* تصغير قليلاً لتناسب الشاشات */
+            color: var(--gold-light);
+            display: block;
+            text-shadow: 0 5px 15px rgba(184, 153, 90, 0.4);
+        }
+
+        .and-symbol {
+            font-size: 1.5rem;
+            margin: 15px 0;
+            display: inline-block;
+            color: #fff;
+            animation: pulseSymbol 2s infinite;
+        }
+
+        @keyframes pulseSymbol {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.3); opacity: 1; color: var(--gold-light); }
+        }
+
+        /* التفاصيل والعداد */
+        .details-box {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 40px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 20px 10px;
+            border: 1px solid rgba(232, 211, 162, 0.2);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .detail-item p {
+            margin: 5px 0;
+            font-size: 0.95rem;
+            color: var(--white-text);
+        }
+
+        .detail-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            animation: bounceIcon 3s infinite ease-in-out;
+        }
+
+        @keyframes bounceIcon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .timer {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            direction: ltr;
+        }
+
+        .time-box {
+            background: linear-gradient(180deg, rgba(184, 153, 90, 0.2), rgba(0,0,0,0.6));
+            border: 1px solid var(--gold-dark);
+            padding: 15px 10px;
+            border-radius: 10px;
+            min-width: 65px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .time-box::after {
+            content: ''; position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+            transform: rotate(30deg);
+            animation: shineBox 4s infinite;
+        }
+
+        @keyframes shineBox {
+            0% { transform: translateX(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) rotate(30deg); }
+        }
+
+        .time-val {
+            font-family: 'Aref Ruqaa', serif;
+            font-size: 2rem;
+            display: block;
+            color: #fff;
+        }
+
+        .pulse-sec {
+            animation: heartbeat 1s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); color: var(--gold-light); }
+        }
+
+        .time-label {
+            font-size: 0.8rem;
+            color: var(--gold-light);
+            font-weight: bold;
+        }
+
+        .footer {
+            margin-top: 40px;
+            font-family: 'Aref Ruqaa', serif;
+            font-size: 2.2rem;
+            text-shadow: 0 5px 10px rgba(0,0,0,0.5);
+        }
+
+        /* تحسينات لشاشات الجوال الصغيرة جداً */
+        @media (max-width: 400px) {
+            .main-title { font-size: 3.5rem; }
+            .name { font-size: 2rem; }
+            .timer { gap: 10px; }
+            .time-box { min-width: 55px; padding: 10px 5px; }
+            .time-val { font-size: 1.6rem; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="particles-container" id="particles"></div>
+
+    <div class="video-container">
+        
+        <div id="scene1" class="hidden-scene">
+            <h1 class="main-title">دَعْوَة</h1>
+        </div>
+
+        <div id="scene2" class="hidden-scene">
+            <!-- إطار الصورة بعد تعديلات القص الذكي -->
+            <div class="groom-frame-wrapper">
+                <div class="img-crop-container">
+                    <img src="https://i.ibb.co/Y4C3kCns/1000066770.png" alt="العريس">
+                </div>
+            </div>
+        </div>
+
+        <div id="scene3" class="hidden-scene">
+            <div class="typewriter-text">
+                <span id="typed-text"></span><span class="cursor"></span>
+            </div>
+        </div>
+
+        <div id="scene4" class="hidden-scene">
+            <div class="names-box">
+                <span class="name">المهندس الشفيع إبراهيم</span>
+                <span class="and-symbol">و</span>
+                <span class="name">الدكتورة وئام سر الختم</span>
+            </div>
+        </div>
+
+        <div id="scene5" class="hidden-scene">
+            <div class="details-box">
+                <div class="detail-item">
+                    <div class="detail-icon">🗓️</div>
+                    <p style="color: var(--gold-light); font-weight: bold;">الجمعة ثالث أيام العيد</p>
+                    <p>29 / 05 / 2026</p>
+                </div>
+                <div style="width: 1px; background: var(--gold-dark); opacity: 0.3;"></div>
+                <div class="detail-item">
+                    <div class="detail-icon">📍</div>
+                    <p style="color: var(--gold-light); font-weight: bold;">جنوب الجزيرة</p>
+                    <p>قرية الشريف دفع الله</p>
+                </div>
+            </div>
+
+            <div class="timer">
+                <div class="time-box"><span class="time-val" id="days">00</span><span class="time-label">يوم</span></div>
+                <div class="time-box"><span class="time-val" id="hours">00</span><span class="time-label">ساعة</span></div>
+                <div class="time-box"><span class="time-val" id="minutes">00</span><span class="time-label">دقيقة</span></div>
+                <div class="time-box"><span class="time-val pulse-sec" id="seconds">00</span><span class="time-label">ثانية</span></div>
+            </div>
+
+            <div class="footer">وبحضوركم يتم لنا الفرح</div>
+        </div>
+
+    </div>
+
+    <script>
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 40; i++) {
+            let particle = document.createElement('div');
+            particle.classList.add('particle');
+            let size = Math.random() * 5 + 2 + 'px';
+            particle.style.width = size;
+            particle.style.height = size;
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.animationDuration = (Math.random() * 5 + 6) + 's';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        const fullText = "بكل الود والترحاب..\nآل إبراهيم أحمد عبدالقادر يتشرفون بدعوتكم لتناول وجبة الغداء ولحضور عقد قران ابنهم.";
+        let i = 0;
+        const speed = 60; 
+
+        function typeWriter() {
+            if (i < fullText.length) {
+                let char = fullText.charAt(i);
+                if(char === '\n') {
+                    document.getElementById("typed-text").innerHTML += "<br>";
+                } else {
+                    document.getElementById("typed-text").innerHTML += char;
+                }
+                i++;
+                setTimeout(typeWriter, speed);
+            } else {
+                setTimeout(() => {
+                    const scene4 = document.getElementById('scene4');
+                    scene4.classList.add('show-scene');
+                    scene4.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 1000);
+                
+                setTimeout(() => {
+                    const scene5 = document.getElementById('scene5');
+                    scene5.classList.add('show-scene');
+                    scene5.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                }, 2800);
+            }
+        }
+
+        window.onload = function() {
+            setTimeout(() => document.getElementById('scene1').classList.add('show-scene'), 500);
+            setTimeout(() => document.getElementById('scene2').classList.add('show-scene'), 1500);
+            setTimeout(() => {
+                document.getElementById('scene3').classList.add('show-scene');
+                typeWriter();
+            }, 2500);
+        };
+
+        const weddingDate = new Date("May 29, 2026 13:00:00").getTime();
+        setInterval(function() {
+            const now = new Date().getTime();
+            const diff = weddingDate - now;
+            if (diff > 0) {
+                document.getElementById("days").innerHTML = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+                document.getElementById("hours").innerHTML = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+                document.getElementById("minutes").innerHTML = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+                document.getElementById("seconds").innerHTML = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
